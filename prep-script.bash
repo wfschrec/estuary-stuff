@@ -16,6 +16,23 @@ help()
   echo "Example: ./prep-script.sh -d /data -p estuary1234 -v"
 }
 
+install_package() {
+  PKG=$1
+  echo "Checking for "$PKG" ... "
+  dPKG -s $pkg &> /dev/null
+
+  if [ ! $? -eq 0 ]; then
+    echo "Installing "$PKG"."
+    if [ $VERBOSE -eq 1 ]; then
+      sudo apt -y install $PKG
+    else
+      sudo apt -y install $PKG &> /dev/null
+    fi
+  else
+    echo $PKG" already installed."
+  fi
+}
+
 POSITIONAL_ARGS=()
 PASSWORD="estuary123"
 DATADIR="/data"
@@ -63,84 +80,12 @@ else
   sudo apt update &> /dev/null
 fi
 
-echo "Checking for hwloc ... "
-dpkg -s hwloc &> /dev/null
-
-if [ ! $? -eq 0 ]; then
-  echo "Installing hwloc."
-  if [ $VERBOSE -eq 1 ]; then
-    sudo apt -y install hwloc
-  else
-    sudo apt -y install hwloc &> /dev/null
-  fi
-else
-  echo "hwloc already installed."
-fi
-
-echo "Checking for jq ... "
-dpkg -s jq &> /dev/null
-if [ ! $? -eq 0 ]; then
-  echo "Installing jq."
-  if [ $VERBOSE -eq 1 ]; then
-    sudo apt -y install jq
-  else
-    sudo apt -y install jq &> /dev/null
-  fi
-else
-  echo "jq already installed."
-fi
-
-echo "Checking for make ... "
-dpkg -s make &> /dev/null
-if [ ! $? -eq 0 ]; then
-  echo "Installing make."
-  if [ $VERBOSE -eq 1 ]; then
-    sudo apt -y install make
-  else
-    sudo apt -y install make &> /dev/null
-  fi
-else
-  echo "make already installed."
-fi
-
-echo "Checking for gcc ... "
-dpkg -s gcc &> /dev/null
-if [ ! $? -eq 0 ]; then
-  echo "Installing gcc."
-  if [ $VERBOSE -eq 1 ]; then
-    sudo apt -y install gcc
-  else
-    sudo apt -y install gcc &> /dev/null
-  fi
-else
-  echo "gcc already installed."
-fi
-
-echo "Checking for pkg-config ... "
-dpkg -s pkg-config &> /dev/null
-if [ ! $? -eq 0 ]; then
-  echo "Installing pkg-config."
-  if [ $VERBOSE -eq 1 ]; then
-    sudo apt -y install pkg-config
-  else
-    sudo apt -y install pkg-config &> /dev/null
-  fi
-else
-  echo "pkg-config already installed."
-fi
-
-echo "Checking for libtinfo5 ... "
-dpkg -s libtinfo5 &> /dev/null
-if [ ! $? -eq 0 ]; then
-  echo "Installing libtinfo5."
-  if [ $VERBOSE -eq 1 ]; then
-    sudo apt -y install libtinfo5
-  else
-    sudo apt -y install libtinfo5 &> /dev/null
-  fi
-else
-  echo "libtinfo5 already installed."
-fi
+install_package "hwloc"
+install_package "jq"
+install_package "make"
+install_package "gcc"
+install_package "pkg-config"
+install_package "libtinfo5"
 
 echo "Checking for go installation."
 if [ ! -d "/usr/local/go" ]; then
