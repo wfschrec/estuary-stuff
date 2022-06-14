@@ -13,7 +13,7 @@ help()
   echo "    -d data directory for estuary use"
   echo "    -p password you wish to use for estuary database"
   echo
-  echo "Example: ./prep-script.sh -d /data -p estuary1234 -v"
+  echo "Example: source prep-script.sh -d /data -p estuary1234 -v"
 }
 
 install_package() {
